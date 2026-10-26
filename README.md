@@ -1,11 +1,11 @@
 # Pressure and Nitrogen Level Logger
----
+
 Alessandro Bruschi - October 2026
 
 alessandro.bruschi@physics.ox.ac.uk
 
 ## Overview
----
+
 This code base supports the monitoring of pressure and nitrogen level within a cryogenic container by measuring temperature at three different levels. It was designed to monitor a cryogenic container at the University of Oxford within the DarkSide-20k experiment.
 
 Pressure is measured via an MKS 910 DualTrans Transducer and an MKS Series 900 Controller. The controller is queried with specific lines to prompt pressure readout (with both the MicroPirani and Piezo sensors, as well as a combination of the two).
@@ -18,7 +18,7 @@ The data can be viewed and graphed in real-time via Grafana, a visualization sui
 To use it, simply navigate to Grafana on any browser and choose the ` Logger ` dashboard. The amount of time graphed can be chosen on the top left.
 
 ## Prerequisites
----
+
 
 ### Serial
 
@@ -28,21 +28,21 @@ pySerial must be installed to read and communicate with the two sensors. Once py
 
 Plug in both, then find the correct ports.
 
-**Linux**
+**Linux** <br>
 To see a list of plugged in devices run ` ls /dev/tty* `; they will be listed in plug-in order (e.g. /dev/ttyACM0).
 If you want a specific path, independent of plug-in order, run ` s /dev/serial/by-id/ ` and use that serial id (e.g. /dev/serial/by-id/usb-Teensyduino_USB_Serial_12345670-if00).
 
-**macOS**
+**macOS** <br>
 To see a list of plugged in devices run `  ls /dev/cu.* `. The two sensors should be distinguishable by type (e.g. teensy /dev/cu.usbmodem165136901 and MKS /dev/cu.usbserial-14210) 
 
-**Windows**
+**Windows** <br>
 Navigate to Device Manager > Ports (COM & LPT) and two will be listed (e.g. COM3 and COM6)
 
 ### Grafana
 The structure of the visual graphing is in ` dashboards/logger.json `, taking data from the local web servers chosen in ` logger/logger.py `.
 To use Grafana it must be installed, along with the Infinity plugin, and then configured so it can read its instructions (` grafana/provisioning `). This process has been streamlined with custom made scripts (`grafana/setup`) for each OS, to make sure Grafana has the correct path to read the necessary files. This method has not been tested with other Grafana projects open, name/UID conflicts may arise.
 
-**Linux**
+**Linux** <br>
 After cloning the repository and navigating to it, run:
 ```bash
 bash grafana/setup/setup-linux.sh
@@ -57,7 +57,7 @@ which should return ` active(running)`.
 
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
-**macOS**
+**macOS** <br>
 Assuming Homebrew is installed, after cloning the repository and navigating to it, run:
 ```bash
 bash grafana/setup/setup-macos.sh
@@ -72,7 +72,7 @@ and look for Grafana. If needed, restart it with `brew services restart grafana`
 
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
-**Windows**
+**Windows** <br>
 Download the official [Grafana Windows](https://grafana.com/grafana/download?edition=oss&platform=windows) version and extract to a directory such as `C:\Grafana`. Make sure `\bin\grafana.exe` and `\conf` exist.
 
 Open PowerShell and clone the repository, navigate to it, and run:
@@ -91,7 +91,7 @@ This terminal needs to be open while running Grafana. If that is not possible, a
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
 ## Configuration
----
+
 To ensure functioning, one must write the correct ports in which the Teensy and MKS Controller are plugged in trough ` logger.py `.
 The port names have to be written here:
 ```python
@@ -110,7 +110,7 @@ INTERVAL = 60
 
 Teensy 4.1 stores its script (` temperature_query.ino `) in memory and starts running it once it receives power. It can be unplugged anytime without problem.
 
-*Resistances*
+*Resistances* <br>
 It is assumed the three fixed resistors in the voltage dividers are equal and of (nominal) value `500 Ohm`. In case, their value can be modified (a measured value gives a higher precision PT100 resistance value) in:
 ` const float R_REF[3] = {500.0, 500.0, 500.0}; `
 They correspond, respectivly, to pins A0(14), A1(15), A2(16) ob the Teensy 4.1
@@ -124,7 +124,7 @@ const double B = -5.775e-7;
 const double C = -4.183e-12;
 ```
 
-*Queries*
+*Queries* <br>
 Four queries are accepted:
 ` READ\n `: outputs the computed temperature for the three PT1000. It is the only one used in ` logger.py `.
 ` READ_RESISTANCE\n `: outputs the resistance of the three PT1000. 
@@ -134,7 +134,7 @@ Otherwise an ` ERR:unkown command ` error is thrown out.
 
 
 ## Output Structure
----
+
 ### To Screen
 Each measurement is printed to screen as two lines (one for temperature, one for pressure). Each line shows the time and three measured values (either MicroPirani, Piezo, combined and the three PT1000 respectively). For easier reading, the pressure values are in brackets, the temperatures are not.
 For example:
@@ -152,7 +152,7 @@ For example ` 2026-10-22T09:43:03.436306+00:00,1200.0,995.0,995.0 `
 On a browser, navigate to `localhost:3000/d/adkpsps` which should open Grafana. Make sure you have started runing ` logger.py ` with both sensors plugged in, if on Windows, the correct PowerShell is also needed, see section Prerequisites > Grafana > Windows of this README. The page should open within Grafana to `Dashboards > Logger` and you should see the pressure and temperature data logged on two graphs. The time taken in consideration can be adjusted at the top. Refresh to see new data points.
 
 ## Troubleshooting
----
+
 ### MKS Controller Not Responding
 If the MKS Controller is not responding, navigate within its interface to ` Setup > Communication ` and then manually reset ` Controller Adress ` to 253, `Controller Baud rate` to 9600 and ` Interface ` to RS232. It should now work.
 

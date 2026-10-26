@@ -1,0 +1,8 @@
+pressure.csv
+temperature.csv
+*.csv
+grafana.db
+__pycache__/
+.DS_Store
+Thumbs.db
+*.log

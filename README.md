@@ -116,7 +116,7 @@ It is assumed the three fixed resistors in the voltage dividers are equal and of
 They correspond, respectivly, to pins A0(14), A1(15), A2(16) ob the Teensy 4.1
 
 It is also assumed that the PT1000 have values corresponding to the IEC 60751 Standard (mainly that at 0°C the resistance is 1kOhm). If that is not the case, or the Callendar-Van Dusen coefficients need to be altered, one can do so in:
-```arduino
+```cpp
 //PT1000 resistance to temperature conversion (Callendar-Van Dusen equation)
 const double R0 = 1000.0;          
 const double A = 3.9083e-3;

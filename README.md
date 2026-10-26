@@ -28,21 +28,21 @@ pySerial must be installed to read and communicate with the two sensors. Once py
 
 Plug in both, then find the correct ports.
 
-**Linux** <br>
+#### Linux
 To see a list of plugged in devices run ` ls /dev/tty* `; they will be listed in plug-in order (e.g. /dev/ttyACM0).
 If you want a specific path, independent of plug-in order, run ` s /dev/serial/by-id/ ` and use that serial id (e.g. /dev/serial/by-id/usb-Teensyduino_USB_Serial_12345670-if00).
 
-**macOS** <br>
+#### macOS
 To see a list of plugged in devices run `  ls /dev/cu.* `. The two sensors should be distinguishable by type (e.g. teensy /dev/cu.usbmodem165136901 and MKS /dev/cu.usbserial-14210) 
 
-**Windows** <br>
+#### Windows
 Navigate to Device Manager > Ports (COM & LPT) and two will be listed (e.g. COM3 and COM6)
 
 ### Grafana
 The structure of the visual graphing is in ` dashboards/logger.json `, taking data from the local web servers chosen in ` logger/logger.py `.
 To use Grafana it must be installed, along with the Infinity plugin, and then configured so it can read its instructions (` grafana/provisioning `). This process has been streamlined with custom made scripts (`grafana/setup`) for each OS, to make sure Grafana has the correct path to read the necessary files. This method has not been tested with other Grafana projects open, name/UID conflicts may arise.
 
-**Linux** <br>
+#### Linux
 After cloning the repository and navigating to it, run:
 ```bash
 bash grafana/setup/setup-linux.sh
@@ -57,7 +57,7 @@ which should return ` active(running)`.
 
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
-**macOS** <br>
+#### macOS
 Assuming Homebrew is installed, after cloning the repository and navigating to it, run:
 ```bash
 bash grafana/setup/setup-macos.sh
@@ -72,7 +72,7 @@ and look for Grafana. If needed, restart it with `brew services restart grafana`
 
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
-**Windows** <br>
+#### Windows
 Download the official [Grafana Windows](https://grafana.com/grafana/download?edition=oss&platform=windows) version and extract to a directory such as `C:\Grafana`. Make sure `\bin\grafana.exe` and `\conf` exist.
 
 Open PowerShell and clone the repository, navigate to it, and run:
@@ -110,9 +110,11 @@ INTERVAL = 60
 
 Teensy 4.1 stores its script (` temperature_query.ino `) in memory and starts running it once it receives power. It can be unplugged anytime without problem.
 
-*Resistances* <br>
+#### Resistances
 It is assumed the three fixed resistors in the voltage dividers are equal and of (nominal) value `500 Ohm`. In case, their value can be modified (a measured value gives a higher precision PT100 resistance value) in:
-` const float R_REF[3] = {500.0, 500.0, 500.0}; `
+```cpp
+ const float R_REF[3] = {500.0, 500.0, 500.0}; 
+ ```
 They correspond, respectivly, to pins A0(14), A1(15), A2(16) ob the Teensy 4.1
 
 It is also assumed that the PT1000 have values corresponding to the IEC 60751 Standard (mainly that at 0°C the resistance is 1kOhm). If that is not the case, or the Callendar-Van Dusen coefficients need to be altered, one can do so in:
@@ -124,12 +126,12 @@ const double B = -5.775e-7;
 const double C = -4.183e-12;
 ```
 
-*Queries* <br>
+#### Queries
 Four queries are accepted:
-` READ\n `: outputs the computed temperature for the three PT1000. It is the only one used in ` logger.py `.
-` READ_RESISTANCE\n `: outputs the resistance of the three PT1000. 
-` READ_VOLTAGE\n `: outputs the voltage leaving each of the three voltage dividers.
-` ID?\n `: prints out ` Teensy PT1000 reader ` as a sanity check one is talking to the right port.
+* ` READ\n `: outputs the computed temperature for the three PT1000. It is the only one used in ` logger.py `.
+*  READ_RESISTANCE\n `: outputs the resistance of the three PT1000. 
+* ` READ_VOLTAGE\n `: outputs the voltage leaving each of the three voltage dividers.
+* ` ID?\n `: prints out ` Teensy PT1000 reader ` as a sanity check one is talking to the right port.
 Otherwise an ` ERR:unkown command ` error is thrown out.
 
 

@@ -15,7 +15,7 @@ The data is printed to screen and saved in .csv files (pressure.csv and temperat
 For real-time monitoring, these files are uploaded to local web servers (127.0.0.1:8000/pressure.csv and 127.0.0.1:8001/temperature.csv respectively).
 
 The data can be viewed and graphed in real-time via Grafana, a visualization suite. The necessary dashboard and panels to view the data from the web server are included in the repository.
-To use it, simply navigate to Grafana on any browser and choose the ` Logger ` dashboard. The amount of time graphed can be chosen on the top left.
+To use it, simply navigate to Grafana on any browser and choose the ` Logger ` dashboard. The amount of time graphed can be chosen at the top.
 
 ## Prerequisites
 
@@ -40,7 +40,8 @@ Navigate to Device Manager > Ports (COM & LPT) and two will be listed (e.g. COM3
 
 ### Grafana
 The structure of the visual graphing is in ` dashboards/logger.json `, taking data from the local web servers chosen in ` logger/logger.py `.
-To use Grafana it must be installed, along with the Infinity plugin, and then configured so it can read its instructions (` grafana/provisioning `). This process has been streamlined with custom made scripts (`grafana/setup`) for each OS, to make sure Grafana has the correct path to read the necessary files. This method has not been tested with other Grafana projects open, name/UID conflicts may arise.
+To use Grafana it must be installed, along with the Infinity plugin, and then configured so it can read its instructions (` grafana/provisioning `). This process has been streamlined with custom made scripts (`grafana/setup`) for each OS, to make sure Grafana has the correct path to read the necessary files. This method has not been tested with other Grafana projects open, name/UID conflicts may arise. 
+Grafana is used through the local webserver on port 3000, which must be free (needed condition to use the setup scrips).
 
 #### Linux
 After cloning the repository and navigating to it, run:
@@ -58,17 +59,12 @@ which should return ` active(running)`.
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
 #### macOS
-Assuming Homebrew is installed, after cloning the repository and navigating to it, run:
+After cloning the repository and navigating to it, run:
 ```bash
 bash grafana/setup/setup-macos.sh
 ```
 It works for both Apple Silicon and Intel. 
-
-To check successful installation:
-```bash
-brew services list
-```
-and look for Grafana. If needed, restart it with `brew services restart grafana`.
+Then open a new terminal window and run `grafana-start`. The terminal window must be kept running for Grafana to work. Close out of it to close out of Grafana.
 
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
@@ -77,7 +73,7 @@ Download the official [Grafana Windows](https://grafana.com/grafana/download?edi
 
 Open PowerShell and clone the repository, navigate to it, and run:
 ```bash
-powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows.ps1 -GrafanaHome `C:\Grafana`
+powershell -ExecutionPolicy Bypass -File .\grafana\setup\setup-windows.ps1 -GrafanaHome `C:\Grafana`
 ```
 Alter `C:\Grafana` if a different extraction directory is used. The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
 

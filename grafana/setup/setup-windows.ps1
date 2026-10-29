@@ -2,7 +2,7 @@ param(
     [Parameter(Mandatory = $true)] [string] $GrafanaHome
 )
 $ErrorActionPreference = 'Stop'
-$Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $GrafanaHome = (Resolve-Path $GrafanaHome).Path
 $Exe = Join-Path $GrafanaHome 'bin\grafana.exe'
 if (!(Test-Path $Exe)) { throw "Grafana executable not found at $Exe. Extract the official Grafana Windows standalone archive, and pass the directory containing bin and conf." }

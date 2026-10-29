@@ -64,25 +64,24 @@ After cloning the repository and navigating to it, run:
 bash grafana/setup/setup-macos.sh
 ```
 It works for both Apple Silicon and Intel. 
-Then open a new terminal window and run `grafana-start`. The terminal window must be kept running for Grafana to work. Close out of it to close out of Grafana.
+Then open a new terminal window and run `grafana-start`; it might take a few moments to start up. The terminal window must be kept running for Grafana to work. Close out of it to close out of Grafana.
 
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 
 #### Windows
 Download the official [Grafana Windows](https://grafana.com/grafana/download?edition=oss&platform=windows) version and extract to a directory such as `C:\Grafana`. Make sure `\bin\grafana.exe` and `\conf` exist.
 
-Open PowerShell and clone the repository, navigate to it, and run:
+Open PowerShell and clone the repository, navigate to it, and run (open PowerShell as an administrator if needed):
 ```bash
 powershell -ExecutionPolicy Bypass -File .\grafana\setup\setup-windows.ps1 -GrafanaHome `C:\Grafana`
 ```
-Alter `C:\Grafana` if a different extraction directory is used. The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
+Alter `C:\Grafana` with your local path if a different extraction directory is used. The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
 
-In a different terminal run:
+Then, as per the onscreen instructions, run:
 ```bash
 Set-Location `C:\Grafana`
  .\bin\grafana.exe server --homepath .
 ```
-This terminal needs to be open while running Grafana. If that is not possible, a manual Grafana installation and setup is needed.
 
 Visit [Grafana](http://localhost:3000/d/adkpsps) to view the graphs. On first installation, sign in with the default `admin`/`admin` credentials and change the password when prompted.
 

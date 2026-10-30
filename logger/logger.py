@@ -28,8 +28,8 @@ def query_temp(ser):
     ser.reset_input_buffer() #clear buffer
     ser.write(b"READ\n")
     reply = ser.readline().decode("ascii", errors="replace").strip()
-    R1, R2, R3 = map(float, reply.split(","))
-    return R1, R2, R3
+    T1, T2, T3 = map(float, reply.split(","))
+    return T1, T2, T3
 
 #--- serial querying mks controller/transducer(pres)---
 def query_pres(ser, cmd, addr="253"):
@@ -45,14 +45,14 @@ while True:
     t0 = time.time()
     try: #teensy communication
         with serial.Serial(PORT_TEENSY, 115200, timeout=2) as ser:
-            R1, R2, R3 = query_temp(ser)
+            T1, T2, T3 = query_temp(ser)
         new = not os.path.exists(CSV_TEMP)
         with open(CSV_TEMP, "a", newline="") as f:
             w = csv.writer(f)
             if new:
-                w.writerow(["time", "R1", "R2", "R3"])
-            w.writerow([datetime.datetime.now(datetime.timezone.utc).isoformat(), R1, R2, R3])
-        print(datetime.datetime.now().strftime("%H:%M:%S"), R1, R2, R3)
+                w.writerow(["Time", "T1", "T2", "T3"])
+            w.writerow([datetime.datetime.now(datetime.timezone.utc).isoformat(), T1, T2, T3])
+        print(datetime.datetime.now().strftime("%H:%M:%S"), T1, T2, T3)
     except (serial.SerialException, ValueError) as e:
         print("read serial:", e) # e.g. cable unplugged
     try: #mks communication
@@ -63,7 +63,7 @@ while True:
         with open(CSV_PRES, "a", newline="") as f:
             w = csv.writer(f)
             if new:
-                w.writerow(["time", "pr1", "pr2", "pr3"])
+                w.writerow(["Time", "PR1", "PR2", "PR3"])
             w.writerow([datetime.datetime.now(datetime.timezone.utc).isoformat()] + vals)
         print(datetime.datetime.now().strftime("%H:%M:%S"), vals)
     except (serial.SerialException, IOError, ValueError) as e:

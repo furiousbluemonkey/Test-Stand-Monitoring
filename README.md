@@ -8,7 +8,7 @@ alessandro.bruschi@physics.ox.ac.uk
 
 This code base supports the monitoring of pressure and nitrogen level within a cryogenic container by measuring temperature at three different levels. It was designed to monitor a cryogenic container at the University of Oxford within the DarkSide-20k experiment.
 
-Pressure is measured via an MKS 910 DualTrans Transducer and an MKS Series 900 Controller. The controller is queried with specific lines to prompt pressure readout (with both the MicroPirani and Piezo sensors, as well as a combination of the two).
+Pressure is measured via an MKS 910 DualTrans Transducer and an MKS Series 900 Controller. The controller is queried with specific lines to prompt pressure readout, with both the MicroPirani and Piezo sensors, as well as a combination of the two.
 Temperature is measured via three PT1000 sensors, whose resistance-temperature relationship is governed by the Callendar-Van Dusen equation, approximated with the Newton-Raphson method. Their resistance is measured through a Teensy 4.1. The three PT1000 are placed at different heights within the container; their temperature is 77K when within liquid and gradually higher with height when in gas.
 
 The data is printed to screen and saved in .csv files (pressure.csv and temperature.csv) within a folder called `TestStand_logger` on the user`s disk.
@@ -16,6 +16,9 @@ For real-time monitoring, these files are uploaded to local web servers (127.0.0
 
 The data can be viewed and graphed in real-time via Grafana, a visualization suite. The necessary dashboard and panels to view the data from the web server are included in the repository.
 To use it, simply navigate to Grafana on any browser and choose the ` Logger ` dashboard. The amount of time graphed can be chosen at the top.
+
+The Pressure panel lists the MicroPirani, Piezo and combination measurements as PR1 (red), PR2 (yellow), and PR3 (orange) respectively. At pressures far from vacuum, as in our case, the MicroPirani sensor is quite inaccurate (the combined value usually just matches the Piezo measurement); it was decided to keep it nonetheless.
+The Temperature panel also lists the three PT1000 resistances as T1 (red), T2 (yellow), and T3 (orange); they are ordered from deepest to shallowest in the stand *actually do this on setup*.
 
 ## Prerequisites
 
@@ -146,7 +149,8 @@ Each measurement is stored as Date-Time(UTC)-Measurements.
 For example ` 2026-10-22T09:43:03.436306+00:00,1200.0,995.0,995.0 `
 
 ### Grafana
-On a browser, navigate to `localhost:3000/d/adkpsps` which should open Grafana. Make sure you have started runing ` logger.py ` with both sensors plugged in, if on Windows, the correct PowerShell is also needed, see section Prerequisites > Grafana > Windows of this README. The page should open within Grafana to `Dashboards > Logger` and you should see the pressure and temperature data logged on two graphs. The time taken in consideration can be adjusted at the top. Refresh to see new data points.
+On a browser, navigate to `localhost:3000/d/adkpsps` which should open Grafana to the correct dashboard, displaying the Pressure and Temperature panels. Make sure you have started runing ` logger.py ` with both sensors plugged in. The amount of time graphed can be selected on the top. Refresh to see new data points.
+For any information, refer to the previous parts of this README.
 
 ## Troubleshooting
 
@@ -160,3 +164,5 @@ Make sure no other program is occupying or reading the port (e.g. PuTTy or Ardui
 Make sure `logger.py` is running. 
 By navigating to `http://127.0.0.1:8000/pressure.csv` and `http://127.0.0.1:8001/temperature.csv` the relative CSV files should be downloaded, with all data points up to that moment. 
 
+#### Windows
+If all the above applied, check in `Connections > Datasources` that Infinity is correctly installed and running; do the same in `Plugins` and in case manually re-install it. If after refreshing the window the graphs still display `No Data`, enter edit mode and make sure each panel has its `Datasource` set as `yesoreyeram-infinity-datasource`and not as the native Grafana one. 

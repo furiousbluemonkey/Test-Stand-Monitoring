@@ -7,7 +7,7 @@ const double A = 3.9083e-3;
 const double B = -5.775e-7;
 const double C = -4.183e-12;       // only used below 0 °C
 
-double RToKelvin(double R) { //Newton-Raphson numerical solution (calculated in °C)
+double RToCelsius(double R) { //Newton-Raphson numerical solution (calculated in °C)
   double T = (R / R0 - 1.0) / A;          // linear approx (first guess)
   for (int i = 0; i < 10; i++) {
     double c = (T < 0) ? C : 0.0;             // C term only below 0 °C
@@ -72,7 +72,7 @@ void recvWithEndMarker() { //takes in the input
 void parseInput() { //reads input and then outputs
   if (strcmp(receivedChars, "READ") == 0) {
   for (int i = 0; i < 3; i++) {
-    Serial.print(RToKelvin(readR(i)), 1);
+    Serial.print(RToCelsius(readR(i)), 1);
     Serial.print(i < 2 ? " , " : "\n");
   }
   }

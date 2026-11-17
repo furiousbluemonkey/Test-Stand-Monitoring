@@ -82,39 +82,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "PR1",
-              "scope": "series"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "shades"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PR2",
-              "scope": "series"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "shades"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "4",
+              "options": "PR4",
               "scope": "series"
             },
             "properties": [
@@ -157,16 +125,6 @@
               "selector": "Time",
               "text": "",
               "type": "timestamp"
-            },
-            {
-              "selector": "PR1",
-              "text": "",
-              "type": "number"
-            },
-            {
-              "selector": "PR2",
-              "text": "",
-              "type": "number"
             },
             {
               "selector": "PR4",
@@ -258,7 +216,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "T1",
+              "options": "PT2",
               "scope": "series"
             },
             "properties": [
@@ -274,7 +232,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "T2",
+              "options": "PT3",
               "scope": "series"
             },
             "properties": [
@@ -290,7 +248,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "T3",
+              "options": "PT4",
               "scope": "series"
             },
             "properties": [
@@ -335,17 +293,17 @@
               "type": "timestamp"
             },
             {
-              "selector": "T1",
+              "selector": "PT2",
               "text": "",
               "type": "number"
             },
             {
-              "selector": "T2",
+              "selector": "PT3",
               "text": "",
               "type": "number"
             },
             {
-              "selector": "T3",
+              "selector": "PT4",
               "text": "",
               "type": "number"
             }

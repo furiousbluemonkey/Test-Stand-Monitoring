@@ -8,8 +8,8 @@ alessandro.bruschi@physics.ox.ac.uk
 
 This code base supports the monitoring of pressure and nitrogen level within a cryogenic container by measuring temperature at three different levels. It was designed to monitor a cryogenic container at the University of Oxford within the DarkSide-20k experiment.
 
-Pressure is measured via an MKS 910 DualTrans Transducer and an MKS Series 900 Controller. The controller is queried with specific lines to prompt pressure readout, with both the MicroPirani and Piezo sensors, as well as a combination of the two. <br>
-Temperature is measured via three PT1000 sensors, whose resistance-temperature relationship is governed by the Callendar-Van Dusen equation, approximated with the Newton-Raphson method. Their resistance is measured through a Teensy 4.1. The three PT1000 are placed at different heights within the container; their temperature is 77K when within liquid and gradually higher with height when in gas.
+Pressure is measured via an MKS 910 DualTrans Transducer and an MKS Series 900 Controller. The controller is queried with specific lines to prompt pressure readout using a combination of the values obtained from the MicroPirani and Piezo sensors. <br>
+Temperature is measured via three PT1000 sensors, whose resistance-temperature relationship is governed by the Callendar-Van Dusen equation, approximated with the Newton-Raphson method. Their resistance is measured through a Teensy 4.1. The three PT1000 are placed at different heights within the container; their temperature is -196°C when within liquid and gradually higher with height when in gas.
 
 The data is printed to screen and saved in .csv files (pressure.csv and temperature.csv) within a folder called `TestStand_logger` on the user's disk. <br>
 For real-time monitoring, these files are uploaded to local web servers (127.0.0.1:8000/pressure.csv and 127.0.0.1:8001/temperature.csv respectively).
@@ -17,8 +17,8 @@ For real-time monitoring, these files are uploaded to local web servers (127.0.0
 The data can be viewed and graphed in real-time via Grafana, a visualization suite. The necessary dashboard and panels to view the data from the web server are included in the repository. <br>
 To use it, simply navigate to Grafana on any browser and choose the ` Logger ` dashboard. The amount of time graphed can be chosen at the top, as well as the refresh rate to check for new data points.
 
-The Pressure panel lists the MicroPirani, Piezo and combination measurements as PR1 (red), PR2 (yellow), and PR4 (orange) respectively. While both sensors read values at 4 significant values, only the combined value (PR4) shows it. At pressures far from vacuum, as in our case, the MicroPirani (PR1) sensor is quite inaccurate (thus PR4 usually matches PR2); it was decided to keep it nonetheless. <br>
-The Temperature panel also lists the three PT1000 resistances as T1 (red), T2 (yellow), and T3 (orange), they correspond to PT2, PT3, and PT4 in out test stand; they are ordered from deepest to shallowest in the stand ** *actually do this on setup* **.
+The Pressure panel shows pressure as PR4 (orange) respectively. The name is given by the command name for the MKS Controller. At pressures far from vacuum, as in our case, the MicroPirani (PR1) sensor is quite inaccurate (thus PR4 usually matches PR2); therefore only the combined PR4 value was chosen to be displayed. <br>
+The Temperature panel also lists the three PT1000 resistances as PT2 (red), PT3 (yellow), and PT4 (orange), corresponding to the labels given in our test stand; they are ordered from deepest to shallowest in the stand ** *actually do this on setup* **.
 
 ## Prerequisites
 
@@ -102,7 +102,7 @@ In the example they are shown as macOS ports; simply replace the path.
 The only readily configurable setting is the measurement interval, and it is controlled through ` logger.py `. <br>
 The setting is in seconds:
 ```python
-INTERVAL = 60
+INTERVAL = 10
 ```
 
 It is possible to output other values than temperature through the Teensy 4.1 and the PT100, as explained in the following section.
@@ -142,27 +142,27 @@ def query_temp(ser):
     ser.reset_input_buffer() #clear buffer
     ser.write(b"READ\n")
     reply = ser.readline().decode("ascii", errors="replace").strip()
-    T1, T2, T3 = map(float, reply.split(","))
-    return T1, T2, T3
+    PT2, PT3, PT4 = map(float, reply.split(","))
+    return PT2, PT3, PT4
 ```
 
 ## Output Structure
 
 ### To Screen
-Each measurement is printed to screen as two lines (one for temperature, one for pressure). Each line shows the time and the three measured values, as explained in the Overview section. For easier reading, the pressure values are in brackets, while temperatures are not. <br>
+Each measurement is printed to screen as two lines (one for temperature, one for pressure). Each line shows the time and measured values, as explained in the Overview section. For easier reading, the pressure values are in brackets, while temperatures are not. <br>
 For example:
 ```bash
-12:21:54 296.4 296.8 295.5
-12:21:55 [1200.0, 1018.0, 1018.0]
+12:21:54 23.4 23.8 22.5
+12:21:55 [1018.0]
 ```
-The temperatures are clearly in Kelvin; their small deviations are due to using the same values for the Callendar-Van Dusen coefficients for all three PT1000. <br>
-The first pressure value is given by the MicroPirani sensor and is clearly not correct around and above atmospheric pressure, as explained in the Overview section, therefore the third value, which should be the combined one, is essentially equal to the Piezo-meaured pressure.
+The temperatures are given in degrees Celsius; their small deviations are due to using the same values for the Callendar-Van Dusen coefficients for all three PT1000. <br>
+The MicroPirani sensor is quite ineffective around atmospheric pressure (it is meant for vacuums), therefore the measured value is practically given by the Piezo sensor, although it is supposed to be a combined value calculated by the MKS Controller.
 
 ### CSV files
 Two .csv files (pressure.csv and temperature.csv) are created to store data points, placed within a folder (~/TestStand_logger, operating system-independent). <br>
 Each measurement is stored as Date-Time(UTC)-Measurements. <br>
 For example:
- ` 2026-10-22T09:43:03.436306+00:00, 1200.0, 1018.0, 1018.0`
+ ` 2026-10-22T09:43:03.436306+00:00, 1018.0`
 
 ### Grafana
 On a browser, navigate to `localhost:3000/d/adkpsps` which should open Grafana to the correct dashboard, displaying the Pressure and Temperature panels. Make sure you have started running ` logger.py ` with both sensors plugged in. The amount of time graphed can be selected on the top. Refresh to see new data points, or set an automatic refresh rate. <br>

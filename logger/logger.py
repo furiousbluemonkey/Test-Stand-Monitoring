@@ -28,8 +28,8 @@ def query_temp(ser):
     ser.reset_input_buffer() #clear buffer
     ser.write(b"READ\n")
     reply = ser.readline().decode("ascii", errors="replace").strip()
-    T1, T2, T3 = map(float, reply.split(","))
-    return T1, T2, T3
+    PT2, PT3, PT4 = map(float, reply.split(","))
+    return PT2, PT3, PT4
 
 #--- serial querying mks controller/transducer(pres)---
 def query_pres(ser, cmd, addr="253"):
@@ -45,25 +45,25 @@ while True:
     t0 = time.time()
     try: #teensy communication
         with serial.Serial(PORT_TEENSY, 115200, timeout=2) as ser:
-            T1, T2, T3 = query_temp(ser)
+            PT2, PT3, PT4 = query_temp(ser)
         new = not os.path.exists(CSV_TEMP)
         with open(CSV_TEMP, "a", newline="") as f:
             w = csv.writer(f)
             if new:
-                w.writerow(["Time", "T1", "T2", "T3"])
-            w.writerow([datetime.datetime.now(datetime.timezone.utc).isoformat(), T1, T2, T3])
-        print(datetime.datetime.now().strftime("%H:%M:%S"), T1, T2, T3)
+                w.writerow(["Time", "PT2", "PT3", "PT4"])
+            w.writerow([datetime.datetime.now(datetime.timezone.utc).isoformat(), PT2, PT3, PT4])
+        print(datetime.datetime.now().strftime("%H:%M:%S"), PT2, PT3, PT4)
     except (serial.SerialException, ValueError) as e:
         print("read serial:", e) # e.g. cable unplugged
     try: #mks communication
         with serial.Serial(PORT_TRANS, 9600, bytesize=8, parity="N",
                             stopbits=1, timeout=1) as ser:
-            vals = [query_pres(ser, c) for c in ("PR1", "PR2", "PR4")]
+            vals = [query_pres(ser, c) for c in ("PR4")]
         new = not os.path.exists(CSV_PRES)
         with open(CSV_PRES, "a", newline="") as f:
             w = csv.writer(f)
             if new:
-                w.writerow(["Time", "PR1", "PR2", "PR4"])
+                w.writerow(["Time", "PR4"])
             w.writerow([datetime.datetime.now(datetime.timezone.utc).isoformat()] + vals)
         print(datetime.datetime.now().strftime("%H:%M:%S"), vals)
     except (serial.SerialException, IOError, ValueError) as e:

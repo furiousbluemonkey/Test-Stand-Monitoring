@@ -114,7 +114,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "PR3",
+              "options": "4",
               "scope": "series"
             },
             "properties": [
@@ -169,7 +169,7 @@
               "type": "number"
             },
             {
-              "selector": "PR3",
+              "selector": "PR4",
               "text": "",
               "type": "number"
             }

@@ -58,12 +58,12 @@ while True:
     try: #mks communication
         with serial.Serial(PORT_TRANS, 9600, bytesize=8, parity="N",
                             stopbits=1, timeout=1) as ser:
-            vals = [query_pres(ser, c) for c in ("PR1", "PR2", "PR3")]
+            vals = [query_pres(ser, c) for c in ("PR1", "PR2", "PR4")]
         new = not os.path.exists(CSV_PRES)
         with open(CSV_PRES, "a", newline="") as f:
             w = csv.writer(f)
             if new:
-                w.writerow(["Time", "PR1", "PR2", "PR3"])
+                w.writerow(["Time", "PR1", "PR2", "PR4"])
             w.writerow([datetime.datetime.now(datetime.timezone.utc).isoformat()] + vals)
         print(datetime.datetime.now().strftime("%H:%M:%S"), vals)
     except (serial.SerialException, IOError, ValueError) as e:

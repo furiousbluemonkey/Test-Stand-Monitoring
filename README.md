@@ -17,8 +17,8 @@ For real-time monitoring, these files are uploaded to local web servers (127.0.0
 The data can be viewed and graphed in real-time via Grafana, a visualization suite. The necessary dashboard and panels to view the data from the web server are included in the repository. <br>
 To use it, simply navigate to Grafana on any browser and choose the ` Logger ` dashboard. The amount of time graphed can be chosen at the top, as well as the refresh rate to check for new data points.
 
-The Pressure panel lists the MicroPirani, Piezo and combination measurements as PR1 (red), PR2 (yellow), and PR3 (orange) respectively. At pressures far from vacuum, as in our case, the MicroPirani sensor is quite inaccurate (the combined value usually just matches the Piezo measurement); it was decided to keep it nonetheless. <br>
-The Temperature panel also lists the three PT1000 resistances as T1 (red), T2 (yellow), and T3 (orange); they are ordered from deepest to shallowest in the stand ** *actually do this on setup* **.
+The Pressure panel lists the MicroPirani, Piezo and combination measurements as PR1 (red), PR2 (yellow), and PR4 (orange) respectively. While both sensors read values at 4 significant values, only the combined value (PR4) shows it. At pressures far from vacuum, as in our case, the MicroPirani (PR1) sensor is quite inaccurate (thus PR4 usually matches PR2); it was decided to keep it nonetheless. <br>
+The Temperature panel also lists the three PT1000 resistances as T1 (red), T2 (yellow), and T3 (orange), they correspond to PT2, PT3, and PT4 in out test stand; they are ordered from deepest to shallowest in the stand ** *actually do this on setup* **.
 
 ## Prerequisites
 

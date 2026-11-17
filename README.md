@@ -76,13 +76,14 @@ Download the official [Grafana Windows](https://grafana.com/grafana/download?edi
 
 Open PowerShell and clone the repository, navigate to it, and run (open PowerShell as an administrator if needed):
 ```bash
-powershell -ExecutionPolicy Bypass -File .\grafana\setup\setup-windows.ps1 -GrafanaHome "C:.\Program Files\GrafanaLabs\grafana"
+powershell -ExecutionPolicy Bypass -File .\grafana\setup\setup-windows.ps1 -GrafanaHome "C:\Program Files\GrafanaLabs\grafana"
 ```
-Alter `"C:.\Program Files\GrafanaLabs\grafana"` with your local path if a different extraction directory is used (this is the standard path with the Grafana installer). The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
+Alter `"C:\Program Files\GrafanaLabs\grafana"` with your local path if a different extraction directory is used (this is the standard path with the Grafana installer). The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
+Check that Grafana is running with `Get-Service *grafana*`and then restart it in the administrator PowerShell with `Restart-Service Grafana`. 
 
-Then, as per the onscreen instructions, run:
+Then, as per the onscreen instructions in the PowerShell, run:
 ```bash
-Set-Location "C:.\Program Files\GrafanaLabs\grafana"
+Set-Location "C:\Program Files\GrafanaLabs\grafana"
  .\bin\grafana.exe server --homepath .
 ```
 

@@ -1,4 +1,4 @@
-const int pins[3] = {A2, A5, A8};
+const int pins[3] = {A2, A5, A8}; //PT2(16), PT3(19), PT4(22)
 const float R_REF[3] = {496.9, 500.6, 502.8};   // use measured values for higher precision
 
 //PT1000 resistance to temperature conversion (Callendar-Van Dusen equation) ---------------

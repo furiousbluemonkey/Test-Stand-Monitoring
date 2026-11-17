@@ -1,5 +1,5 @@
-const int pins[3] = {A0, A1, A2};
-const float R_REF[3] = {510.4, 508.7, 509.7};   // use measured values for higher precision
+const int pins[3] = {A2, A5, A8};
+const float R_REF[3] = {496.9, 500.6, 502.8};   // use measured values for higher precision
 
 //PT1000 resistance to temperature conversion (Callendar-Van Dusen equation) ---------------
 const double R0 = 1000.0;          
@@ -17,7 +17,7 @@ double RToKelvin(double R) { //Newton-Raphson numerical solution (calculated in 
     T -= dt;
     if (fabs(dt) < 1e-3) break;                   // converged to 0.001 °C
   }
-  return T+273.15;
+  return T;
 }
 //-----------------------------------------------------------------------------------------
 
@@ -79,6 +79,12 @@ void parseInput() { //reads input and then outputs
   else if (strcmp(receivedChars, "READ_RESISTANCE") == 0) { //resistance query
     for (int i = 0; i < 3; i++) {
     Serial.print(readR(i), 1);
+    Serial.print(i < 2 ? " , " : "\n");
+  }
+  }
+  else if (strcmp(receivedChars, "READ_ADC") == 0) { //resistance query
+    for (int i = 0; i < 3; i++) {
+    Serial.print(readAdc(i), 1);
     Serial.print(i < 2 ? " , " : "\n");
   }
   }

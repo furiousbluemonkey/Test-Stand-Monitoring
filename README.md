@@ -76,13 +76,13 @@ Download the official [Grafana Windows](https://grafana.com/grafana/download?edi
 
 Open PowerShell and clone the repository, navigate to it, and run (open PowerShell as an administrator if needed):
 ```bash
-powershell -ExecutionPolicy Bypass -File .\grafana\setup\setup-windows.ps1 -GrafanaHome `C:\Grafana`
+powershell -ExecutionPolicy Bypass -File .\grafana\setup\setup-windows.ps1 -GrafanaHome "C:.\Program Files\GrafanaLabs\grafana"
 ```
-Alter `C:\Grafana` with your local path if a different extraction directory is used. The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
+Alter `"C:.\Program Files\GrafanaLabs\grafana"` with your local path if a different extraction directory is used (this is the standard path with the Grafana installer). The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
 
 Then, as per the onscreen instructions, run:
 ```bash
-Set-Location `C:\Grafana`
+Set-Location "C:.\Program Files\GrafanaLabs\grafana"
  .\bin\grafana.exe server --homepath .
 ```
 
@@ -116,7 +116,7 @@ It is assumed the three fixed resistors in the voltage dividers are equal and of
 ```cpp
  const float R_REF[3] = {500.0, 500.0, 500.0}; 
  ```
-They correspond, respectively, to pins A0(14), A1(15), A2(16) on the Teensy 4.1. In any case, the circuitry is set inside the "Temperature Reader" box ** *actually label it* **.
+On our circuits, the PT1000 are labelled as PT2, PT3, and PT4 and are connected, respectively, to pins A2(16), A5(19), A8(22) on the Teensy 4.1. Labels are present on the circuit inside the "Temperature Reader" box ** *actually label it* **.
 
 It is also assumed that the PT1000 have Callendar-Van Dusen coefficients corresponding to the IEC 60751 Standard (mainly that at 0°C the resistance is 1kΩ). If that is not the case and they need to be altered, one can do so in:
 ```cpp

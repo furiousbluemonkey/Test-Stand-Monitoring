@@ -1,6 +1,6 @@
 const int pins[3] = {A2, A5, A8}; //PT2(16), PT3(19), PT4(22)
-const float R_REF[3] = {496.9, 500.6, 502.8};   // use measured values for higher precision
-
+const float R_REF[3] = {492.9, 494.1, 498.0};   // use measured values for higher precision
+//const float R_REF[3] = {496.9, 499.3, 503.8};
 //PT1000 resistance to temperature conversion (Callendar-Van Dusen equation) ---------------
 const double R0 = 1000.0;          
 const double A = 3.9083e-3;
@@ -21,14 +21,14 @@ double RToCelsius(double R) { //Newton-Raphson numerical solution (calculated in
 }
 //-----------------------------------------------------------------------------------------
 
-const byte numChars = 32; //arbitrary (max message length)
+const byte numChars = 32; //arbitrary max message length
 char receivedChars[numChars];
 bool newData = false;
 
-float readAdc(int ch) { //AADC count
+float readAdc(int ch) { //ADC count
   float sum = 0;
-  for (int i = 0; i < 32; i++) sum += analogRead(pins[ch]);
-  return sum / 32.0;
+  for (int i = 0; i < 2000; i++) sum += analogRead(pins[ch]);
+  return sum / 2000.0; //arbitrary average to smooth ADC fluctuations
 }
 
 float readR(int ch) { //resistance

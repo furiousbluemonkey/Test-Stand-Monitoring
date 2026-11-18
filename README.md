@@ -78,7 +78,7 @@ Open PowerShell and clone the repository, navigate to it, and run (open PowerShe
 ```bash
 powershell -ExecutionPolicy Bypass -File .\grafana\setup\setup-windows.ps1 -GrafanaHome "C:\Program Files\GrafanaLabs\grafana"
 ```
-Alter `"C:\Program Files\GrafanaLabs\grafana"` with your local path if a different extraction directory is used (this is the standard path with the Grafana installer). The command is run in a child PowerShell to not alter the overall PowerShell execution policy.
+Alter `"C:\Program Files\GrafanaLabs\grafana"` with your local path if a different extraction directory is used (this is the standard path with the Grafana installer). The command is run in a child PowerShell to not alter the overall PowerShell execution policy.<br>
 Check that Grafana is running with `Get-Service *grafana*`and then restart it in the administrator PowerShell with `Restart-Service Grafana`. 
 
 Then, as per the onscreen instructions in the PowerShell, run:
@@ -171,7 +171,8 @@ For any other information, refer to the previous parts of this README.
 ## Troubleshooting
 
 ### MKS Controller Not Responding
-If the MKS Controller is not responding, navigate within its interface to ` Setup > Communication ` and then manually reset ` Controller Adress ` to 253, `Controller Baud rate` to 9600 and ` Interface ` to RS232, even if those values are already set. It should now work.
+If the MKS Controller is not responding, navigate within its interface to ` Setup > Communication ` and then manually reset ` Controller Adress ` to 253, `Controller Baud rate` to 9600 and ` Interface ` to RS232, even if those values are already set. It should now work.<br>
+Sometimes a bad reply `@253NAK160;FF`is returned (for some reason the Controller randomly does not recognize the query). If that is the case try manually sending the command `@253PR3?;FF`to the MKS Controller, which should "warm up" the connection. The commented out line `#vals = [query_pres(ser, c) for c in ("PR3","PR4")]` in `logger.py`also does the same thing, use it if needed.
 
 ### Permission Error/Port Occupied
 Make sure no other program is occupying or reading the port (e.g. PuTTy or Arduino IDE). Close out of them.

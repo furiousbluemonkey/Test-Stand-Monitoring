@@ -58,7 +58,8 @@ while True:
     try: #mks communication
         with serial.Serial(PORT_TRANS, 9600, bytesize=8, parity="N",
                             stopbits=1, timeout=1) as ser:
-            vals = [query_pres(ser, c) for c in ("PR4")]
+            #vals = [query_pres(ser, c) for c in ("PR3","PR4")]
+            vals = [query_pres(ser, "PR4")]
         new = not os.path.exists(CSV_PRES)
         with open(CSV_PRES, "a", newline="") as f:
             w = csv.writer(f)

@@ -46,6 +46,10 @@ while True:
     try: #teensy communication
         with serial.Serial(PORT_TEENSY, 115200, timeout=2) as ser:
             PT2, PT3, PT4 = query_temp(ser)
+
+        # Reject readings outside the allowed temperature range
+        if not all(-250 <= PT <= 110 for T in (PT2, PT3, PT4)):
+            raise ValueError("Temperature outside allowed range")    
         new = not os.path.exists(CSV_TEMP)
         with open(CSV_TEMP, "a", newline="") as f:
             w = csv.writer(f)

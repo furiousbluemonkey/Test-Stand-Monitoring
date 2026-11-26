@@ -32,8 +32,8 @@ pySerial must be installed to read and communicate with the two sensors. Once py
 Plug in both, then find the correct ports.
 
 #### Linux
-To see a list of plugged in devices run ` ls /dev/tty* `; they will be listed in plug-in order (e.g. /dev/ttyACM0). <br>
-If you want a specific path, independent of plug-in order, run ` s /dev/serial/by-id/ ` and use that serial id (e.g. /dev/serial/by-id/usb-Teensyduino_USB_Serial_12345670-if00).
+To see a list of plugged in devices run ` ls -l /dev/serial/by-id/ `; use that serial id after `/dev/serial/by-id/`(e.g. /dev/serial/by-id/usb-Teensyduino_USB_Serial_12345670-if00).<br>
+If permission to read the ports is denied, make sure your user is added to the `dialout`group.
 
 #### macOS
 To see a list of plugged in devices run `  ls /dev/cu.* `. The two sensors should be distinguishable by type (e.g. teensy /dev/cu.usbmodem165136901 and MKS /dev/cu.usbserial-14210) 

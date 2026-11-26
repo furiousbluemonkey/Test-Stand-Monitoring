@@ -29,7 +29,7 @@ pySerial must be installed to read and communicate with the two sensors. Once py
 
 ### Connecting Teensy and MKS Controller
 
-Plug in both, then find the correct ports.
+Plug in both, then find the correct ports. Make sure the port name is right for each sensor!
 
 #### Linux
 To see a list of plugged in devices run ` ls -l /dev/serial/by-id/ `; use that serial id after `/dev/serial/by-id/`(e.g. /dev/serial/by-id/usb-Teensyduino_USB_Serial_12345670-if00).<br>

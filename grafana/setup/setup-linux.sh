@@ -2,7 +2,11 @@
 # Install Grafana and the Infinity plugin, then load this repo's data source and
 # dashboard. Supports Debian/Ubuntu (apt) and Fedora/RHEL and derivatives (dnf/yum).
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+until [[ -d "$ROOT/grafana/provisioning" ]]; do
+  [[ "$ROOT" == / ]] && { echo 'Could not find grafana/provisioning above this script'; exit 1; }
+  ROOT="$(dirname "$ROOT")"
+done
 
 # Where Grafana reads the dashboard JSON from.
 # We copy the JSON here instead of pointing Grafana at the repo. Grafana runs as

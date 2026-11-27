@@ -48,8 +48,8 @@ while True:
             PT2, PT3, PT4 = query_temp(ser)
 
         # Reject readings outside the allowed temperature range
-        if not all(-250 <= PT <= 110 for PT in (PT2, PT3, PT4)):
-            raise ValueError("Temperature outside allowed range")   
+        if not all(-250 <= PT <= 130 for PT in (PT2, PT3, PT4)):
+            raise ValueError("Temperature outside range, PT1000 disconnected (or you're dead)")   
              
         new = not os.path.exists(CSV_TEMP)
         with open(CSV_TEMP, "a", newline="") as f:
